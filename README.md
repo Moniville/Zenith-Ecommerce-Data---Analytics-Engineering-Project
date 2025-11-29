@@ -1,10 +1,14 @@
 # Zenith E-Commerce: Data & Analytics Engineering Project
 
 **Title:** Scaling Zenith E-Commerce: Strategic Data Modeling and Performance Optimization (Snowflake & Power BI)
+
 **Category:** Data Engineering & Business Intelligence
+
 **Client:** Zenith E-Commerce (High-Growth Retail Startup)
+
 **Project Lead:** Monivi Hope Ogidi
 **Date:** November 2025
+
 
 ---
 
@@ -41,8 +45,11 @@ The project successfully delivered a robust analytics platform that empowers exe
 | Key Finding | Business Impact |
 | :--- | :--- |
 | **Inventory Risk Mitigation** | Pinpointed the highest-revenue product with stock critically low (8 units left), **avertable a potential revenue loss** from stock-outs. |
+
 | **Customer Value Segmentation** | Identified the Most Valuable Customer (MVC), **Adriana Knox**, who generated over **$91.8K** in lifetime revenue, enabling highly targeted loyalty programs. |
+
 | **Operational Benchmarking** | Confirmed **Q4 2024** as the peak quarter (\$770.4M in revenue), establishing clear performance targets and capacity planning requirements. |
+
 | **Payment Strategy** | Found that **Bank Transfer and PayPal** are the preferred methods in top revenue regions, guiding optimization for the checkout funnel. |
 
 This architecture provides Zenith E-Commerce with the foundation needed to maintain its high-growth trajectory and transition to **proactive, data-driven decision-making.**
