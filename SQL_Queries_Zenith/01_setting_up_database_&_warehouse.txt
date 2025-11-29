@@ -1,0 +1,15 @@
+-- Creating a Warehouse (Compute Resource)
+CREATE WAREHOUSE ZENITH_WH
+    WITH WAREHOUSE_SIZE = 'XSMALL' AUTO_SUSPEND = 60 INITIALLY_SUSPENDED = TRUE;
+
+-- Creating the Database and Schema
+CREATE DATABASE ZENITH_DB;
+CREATE SCHEMA ZENITH_DB.RAW;
+
+-- Setting the Context For All Subsequent Commands
+
+USE WAREHOUSE ZENITH_WH;
+USE DATABASE ZENITH_DB;
+USE SCHEMA RAW;
+
+

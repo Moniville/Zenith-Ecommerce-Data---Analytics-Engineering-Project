@@ -1,0 +1,113 @@
+-- This tells Snowflake which engine to use
+USE WAREHOUSE ZENITH_WH;
+
+-- This tells Snowflake which project (database) to work in
+USE DATABASE ZENITH_DB;
+
+-- Creating a schema for intermediate views or temporary tables
+CREATE SCHEMA IF NOT EXISTS ZENITH_DB.STAGING;
+
+-- Creating a final schema where analysts will query the Star Schema
+CREATE SCHEMA IF NOT EXISTS ZENITH_DB.ANALYTICS;
+
+-- Set the default context for all your future transformation/querying commands
+USE SCHEMA ZENITH_DB.ANALYTICS;
+
+-- Creating Dimension Tables
+-- This table will combine all customer descriptive data into one 
+CREATE OR REPLACE TABLE DIM_CUSTOMERS AS
+    SELECT
+        C.CUSTOMER_ID,
+        C.FIRST_NAME,
+        C.LAST_NAME,
+        C.EMAIL,
+        C.PHONE_NUMBER,
+        -- Joining address fields
+        CONCAT_WS(',', C.ADDRESS, C.CITY, C.STATE, C.ZIP_CODE) AS FULL_ADDRESS,
+        C.CITY,
+        C.STATE,
+        C.ZIP_CODE,
+        C.CREATED_AT AS CUSTOMER_SINCE_TS -- Renaming to clarify it's a timestamp
+        FROM
+        RAW.CUSTOMERS C;
+
+-- Creating the Products Table
+-- This table combines product, category and supplier data from the raw schema
+-- This table also allow analysts to easily group sales by Category or Supplier namehas 
+
+CREATE OR REPLACE TABLE DIM_PRODUCTS AS
+    SELECT
+        P.PRODUCT_ID,
+        P.PRODUCT_NAME,
+        P.DESCRIPTION,
+        P.PRICE,
+        I.QUANTITY_AVAILABLE AS STOCK_QUANTITY,
+        C.CATEGORY_NAME,
+        S.SUPPLIER_NAME
+FROM
+    RAW.PRODUCTS P
+        -- Linking the category, suppliers and products table to get the stock data
+        INNER JOIN RAW.CATEGORIES C ON P.CATEGORY_ID = C.CATEGORY_ID
+        INNER JOIN RAW.SUPPLIERS S ON P.SUPPLIER_ID = S.SUPPLIER_ID
+        INNER JOIN RAW.INVENTORY I ON P.PRODUCT_ID = I.PRODUCT_ID;
+
+
+-- Creating a Date Table for Time Series Analysis.
+-- This table allows reports to easily filter by Year, Quarter or Day of the Week.
+
+CREATE OR REPLACE TABLE DIM_DATES AS
+    SELECT DISTINCT
+        -- Convert the TIMESTAMP (detailed time) to a simple DATE
+        CAST(O.ORDER_DATE AS DATE) AS DATE_KEY,
+        YEAR(O.ORDER_DATE) AS ORDER_YEAR,
+        MONTH(O.ORDER_DATE) AS ORDER_MONTH,
+        MONTHNAME(O.ORDER_DATE) AS ORDER_MONTH_NAME,
+        QUARTER(O.ORDER_DATE) AS ORDER_QUARTER,
+        DAYOFWEEK(O.ORDER_DATE) AS ORDER_DAY_OF_WEEK_NUM,
+        DAYNAME(O.ORDER_DATE) AS ORDER_DAY_OF_WEEK_NAME,
+        WEEKOFYEAR(O.ORDER_DATE) AS ORDER_WEEK_YEAR
+FROM
+    RAW.ORDERS O;
+
+
+-- This table contains all metrics and keys.
+
+CREATE OR REPLACE TABLE FACT_SALES AS
+SELECT
+    --Primary & Foreign Keys
+    OI.ORDER_ID,
+    OI.ORDER_ITEM_ID,
+    O.CUSTOMER_ID,
+    OI.PRODUCT_ID,
+    CAST(O.ORDER_DATE AS DATE) AS DATE_KEY,
+
+    -- Metrics (The numbers to Analyze)
+    OI.QUANTITY,
+    OI.PRICE_PER_UNIT AS UNIT_PRICE,
+    (OI.QUANTITY * OI.PRICE_PER_UNIT) AS REVENUE,-- Calculated Revenue Metrics
+    
+    -- Payment & Shipping Details
+    P.AMOUNT AS TOTAL_PAID,
+    P.PAYMENT_METHOD,
+    S.CARRIER AS SHIPPING_METHOD,
+
+FROM
+   RAW.ORDER_ITEMS OI
+
+-- Joining the Orders Table to get the Customer_id and Order_id
+INNER JOIN RAW.ORDERS O
+    ON OI.ORDER_ID = O.ORDER_ID
+
+-- Joining the Payments Table to get the Payment Method and Total Paid
+INNER JOIN RAW.PAYMENTS P
+    ON OI.ORDER_ID = P.ORDER_ID
+    
+-- Joining the Shipping table to get Shipping Cost, Method and Status.
+INNER JOIN RAW.SHIPPING S
+    ON OI.ORDER_ID = S.ORDER_ID
+;
+
+
+
+
+
