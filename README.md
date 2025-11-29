@@ -26,8 +26,11 @@ This project involved providing Data Engineering expertise to build a complete, 
 
 ### Key Technology Stack:
 * **Cloud Data Warehouse:** Snowflake (for scalable storage and processing).
+  
 * **Data Modeling:** Star Schema (for optimized BI performance).
+  
 * **Visualization:** Power BI (for executive reporting).
+  
 * **Transformation:** Complex SQL (CTEs, joins, aggregations).
 
 ### Core Implementation Steps:
@@ -45,11 +48,8 @@ The project successfully delivered a robust analytics platform that empowers exe
 | Key Finding | Business Impact |
 | :--- | :--- |
 | **Inventory Risk Mitigation** | Pinpointed the highest-revenue product with stock critically low (8 units left), **avertable a potential revenue loss** from stock-outs. |
-
 | **Customer Value Segmentation** | Identified the Most Valuable Customer (MVC), **Adriana Knox**, who generated over **$91.8K** in lifetime revenue, enabling highly targeted loyalty programs. |
-
 | **Operational Benchmarking** | Confirmed **Q4 2024** as the peak quarter (\$770.4M in revenue), establishing clear performance targets and capacity planning requirements. |
-
 | **Payment Strategy** | Found that **Bank Transfer and PayPal** are the preferred methods in top revenue regions, guiding optimization for the checkout funnel. |
 
 This architecture provides Zenith E-Commerce with the foundation needed to maintain its high-growth trajectory and transition to **proactive, data-driven decision-making.**
