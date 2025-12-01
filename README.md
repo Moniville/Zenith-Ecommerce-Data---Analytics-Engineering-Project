@@ -7,6 +7,7 @@
 **Client:** Zenith E-Commerce (High-Growth Retail Startup)
 
 **Project Lead:** Monivi Hope Ogidi
+
 **Date:** November 2025
 
 
@@ -22,7 +23,7 @@ The objective was to transition the company from raw operational data to a **sec
 
 ## The Solution: End-to-End Cloud-Native Architecture
 
-This project involved providing Data Engineering expertise to build a complete, resilient analytics pipeline—from data ingestion to visualization.
+This project involved providing basic Data Engineering expertise to build a complete, resilient analytics pipeline, from data ingestion to visualization.
 
 ### Key Technology Stack:
 * **Cloud Data Warehouse:** Snowflake (for scalable storage and processing).
